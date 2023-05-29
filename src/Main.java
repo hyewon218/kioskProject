@@ -1,8 +1,9 @@
 public class Main {
     public static void main(String[] args) {
+
         Kiosk kiosk = new Kiosk();
-        // 반복을 어떻게 해야할까??
-        for (int i = 0; i < 100; i++) {
+        while (true) {
+            // 메인화면에서 숫자 선택 1,2,3,4(메뉴),5,6(장바구니,장바구니 취소)
             int selectMainMenu = kiosk.selectMainMenu();
 
             switch (selectMainMenu) {
@@ -15,9 +16,8 @@ public class Main {
                     kiosk.addBasket(checkBasket);
                 }
                 case 5 -> {
-                    // 주문 완료 화면 vs 주문 취소 화면 선택
-                    // 주문을 또 시킬 수 있음
-                    kiosk.selectOrderOrCancel(selectMainMenu);
+                    // 주문 완료 화면
+                    kiosk.selectOrderSuccess(selectMainMenu);
                     //1. 주문 2. 메뉴판 출력
                     int selectCheckOrder = kiosk.checkOrder();
                     // 1. 주문 2. 메뉴판 선택

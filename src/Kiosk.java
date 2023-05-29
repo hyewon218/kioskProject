@@ -49,32 +49,40 @@ public class Kiosk extends CategoryMenu {
         } else if (selectMainMenu == 4) {
             int selectBeerMenu = selectBeerMenu();
             super.setBeerInfo(selectBeerMenu);
-        //이렇게 하는 게 맞는지...
-        } else if (selectMainMenu == 5) {
-            selectOrderOrCancel(selectMainMenu);
-        } else if (selectMainMenu == 6) {
-            selectOrderOrCancel(selectMainMenu);
         } else {
             System.out.println("올바르지 않은 입력입니다.");
         }
     }
-    public void selectOrderOrCancel(int selectOrderMenu) {
-        if (selectOrderMenu == 5) {
-            System.out.println("아래와 같이 주문 하시겠습니까?");
-            System.out.println();
-            System.out.println("[ Orders ]");
-            printBasketList();
-            System.out.println();
-            System.out.println("[ Total ]");
-            System.out.println(totalPriceInfo());
-            // 왜 안나오지?????????????????????????????
-            totalPriceInfo();
-            System.out.println();
-            //checkOrder();
-        } else if (selectOrderMenu == 6) {
-            checkCancel();
-        }
+    // 주문 완료 화면
+    public void selectOrderSuccess(int selectOrderMenu) {
+        System.out.println("아래와 같이 주문 하시겠습니까?");
+        System.out.println();
+        System.out.println("[ Orders ]");
+        printBasketList();
+        System.out.println();
+        System.out.println("[ Total ]");
+        System.out.println(totalPriceInfo());
+        // 왜 안나오지?????????????????????????????
+        totalPriceInfo();
+        System.out.println();
     }
+    //메뉴판에서 6.Cancel 입력시 주문을 취소할지 확인을 요청하는 문구가 출력됩니다.
+    public int checkCancel() {
+        System.out.println("진행하던 주문을 취소하시겠습니까?");
+        System.out.println("1.  확인     2. 취소");
+
+        String result = sc.nextLine();
+        return Integer.parseInt(result);
+    }
+    //1.확인 을 입력하면 장바구니는 초기화되고 취소 완료 문구와 함께 메뉴판이 출력됩니다.
+    public void printCancel(int checkCancel) {
+        System.out.println("진행하던 주문이 취소되었습니다.");
+        // 장바구니 초기화
+        orderList.clear();
+        // 가격 초기화
+        priceList.clear();
+    }
+
     //카테고리 메뉴 선택
     public int selectBurgersMenu() {
         System.out.println("\"SHAKESHACK BURGER 에 오신걸 환영합니다.\"");
@@ -89,6 +97,7 @@ public class Kiosk extends CategoryMenu {
         String result = sc.nextLine();
         return Integer.parseInt(result);
     }
+
     public int selectForzenMenu() {
         System.out.println("\"SHAKESHACK BURGER 에 오신걸 환영합니다.\"");
         System.out.println("아래 상품메뉴판을 보시고 상품을 골라 입력해주세요.");
@@ -101,6 +110,7 @@ public class Kiosk extends CategoryMenu {
         String result = sc.nextLine();
         return Integer.parseInt(result);
     }
+
     public int selectDrinksMenu() {
         System.out.println("\"SHAKESHACK BURGER 에 오신걸 환영합니다.\"");
         System.out.println("아래 상품메뉴판을 보시고 상품을 골라 입력해주세요.");
@@ -112,6 +122,7 @@ public class Kiosk extends CategoryMenu {
         String result = sc.nextLine();
         return Integer.parseInt(result);
     }
+
     public int selectBeerMenu() {
         System.out.println("\"SHAKESHACK BURGER 에 오신걸 환영합니다.\"");
         System.out.println("아래 상품메뉴판을 보시고 상품을 골라 입력해주세요.");
@@ -122,6 +133,7 @@ public class Kiosk extends CategoryMenu {
         String result = sc.nextLine();
         return Integer.parseInt(result);
     }
+
     // 장바구니 추가 여부 묻기
     //1.확인 입력시 장바구니에 추가되었다는 안내문구와 함께 메인메뉴로 다시 출력됩니다.
     public int checkBasket() {
@@ -131,8 +143,8 @@ public class Kiosk extends CategoryMenu {
         String result = sc.nextLine();
         return Integer.parseInt(result);
     }
+
     // 장바구니 추가 메서드
-    // 메인 메뉴로 돌아가는 것을 어느 부분에다 해야할지...?
     public void addBasket(int checkBasket) {
         System.out.println();
         if (checkBasket == 1) {
@@ -145,15 +157,11 @@ public class Kiosk extends CategoryMenu {
             System.out.println(orderList);
             System.out.println(priceList);
             System.out.println();
-            //메인메뉴로 다시 출력됩니다.
-            //selectMainMenu();
         } else if (checkBasket == 2) {
             System.out.println("전단계로 돌아가기?");
         } else {
             System.out.println("움");
         }
-        //메인메뉴로 다시 출력됩니다.
-        //selectMainMenu();
     }
     // 장바구니 목록 출력하기
     // 어떻게 해야하지???????????????????
@@ -166,7 +174,7 @@ public class Kiosk extends CategoryMenu {
     // 장바구니에서는 추가된 메뉴들과 총 가격의 합을 출력해줍니다.
     public int totalPrice() {
         int total = 0;
-        for (int i=0; i<priceList.size(); i++) {
+        for (int i = 0; i < priceList.size(); i++) {
             total += priceList.get(i);
         }
         return total;
@@ -182,9 +190,12 @@ public class Kiosk extends CategoryMenu {
         if (checkOrder == 1) {
             printOrderOk();
         } else if (checkOrder == 2) {
-            selectMainMenu();
+            // 다시 메인화면으로.....
+        }else {
+            System.out.println("잘못된 입력입니다.");
         }
     }
+
     //주문 완료 화면
     //1.주문 입력시 대기번호를 발급해줍니다.(쓰레드?)
     //장바구니는 초기화되고 3초후에 메인 메뉴판으로 돌아갑니다.(sleep?)
@@ -192,38 +203,32 @@ public class Kiosk extends CategoryMenu {
         int waitingNum = 0;
         System.out.println("주문이 완료되었습니다!");
         System.out.println();
+        // 대기번호
+        //
         System.out.println("대기번호는 [ " + waitingNum + " ] 번입니다.");
         //장바구니 초기화
         //order
-        System.out.println("초 후에 메뉴판으로 돌아갑니다.");
-        //3초후에 메인 메뉴판으로 돌아갑니다.(sleep?)
-        //selectMainMenu();
+        System.out.println("3초 후에 메뉴판으로 돌아갑니다.");
+        // 쓰레드 추가!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // 3초 멈추기
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-    //메뉴판에서 6.Cancel 입력시 주문을 취소할지 확인을 요청하는 문구가 출력됩니다.
-    public int checkCancel() {
-        System.out.println("진행하던 주문을 취소하시겠습니까?");
-        System.out.println("1.  확인     2. 취소");
 
-        String result = sc.nextLine();
-        return Integer.parseInt(result);
-    }
-    //1.확인 을 입력하면 장바구니는 초기화되고 취소 완료 문구와 함께 메뉴판이 출력됩니다.
-    public void printCancel(int checkCancel) {
-        System.out.println("진행하던 주문이 취소되었습니다.");
-        orderList.clear();
-        priceList.clear();
-        //selectMainMenu();
-    }
     // 주문 정보
     public String orderInfo() {
         double price = getMenuPrice() * (0.001);
         return getCategoryMenuName() + "     | w " + price + " |  " + getCategoryDescription();
     }
-    // 더하고 마지막에 문자 붙여주기???????????
+
     public String totalPriceInfo() {
-        double price = totalPrice()* (0.001);
+        double price = totalPrice() * (0.001);
         return "w " + price;
     }
+
     // 구매가 완료될때마다 판매 상품 목록을 저장해줍니다.
     public String totalOrderInfo() {
         double price = getMenuPrice() * (0.001);
