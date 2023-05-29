@@ -35,28 +35,33 @@ public class CategoryMenu extends MainMenu {
     }
 
     public void setBurgerInfo(int categoryMenuNum) {
-        if (categoryMenuNum == 1) {
-            this.categoryMenuName = "ShackBurger";
-            this.menuPrice = 6900;
-            this.categoryDescription = "토마토, 양상추, 쉑소스가 토핑된 치즈버거";
-        } else if (categoryMenuNum == 2) {
-            this.categoryMenuName = "SmokeShack";
-            this.menuPrice = 8900;
-            this.categoryDescription = "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거";
-        } else if (categoryMenuNum == 3) {
-            this.categoryMenuName = "Shroom Burger";
-            this.menuPrice = 9400;
-            this.categoryDescription = "몬스터 치즈와 체다 치즈로 속을 채운 베지테리안 버거";
-        } else if (categoryMenuNum == 4) {
-            this.categoryMenuName = "Cheeseburger";
-            this.menuPrice = 6900;
-            this.categoryDescription = "포테이토 번과 비프패티, 치즈가 토핑된 치즈버거";
-        } else if (categoryMenuNum == 5) {
-            this.categoryMenuName = "Hamburger";
-            this.menuPrice = 5400;
-            this.categoryDescription = "비프패티를 기반으로 야채가 들어간 기본버거";
-        } else {
-            System.out.println("잘못된 주문 번호입니다. 다시 입력해주세요.");
+        switch (categoryMenuNum) {
+            case 1 -> {
+                this.categoryMenuName = "ShackBurger";
+                this.menuPrice = 6900;
+                this.categoryDescription = "토마토, 양상추, 쉑소스가 토핑된 치즈버거";
+            }
+            case 2 -> {
+                this.categoryMenuName = "SmokeShack";
+                this.menuPrice = 8900;
+                this.categoryDescription = "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거";
+            }
+            case 3 -> {
+                this.categoryMenuName = "Shroom Burger";
+                this.menuPrice = 9400;
+                this.categoryDescription = "몬스터 치즈와 체다 치즈로 속을 채운 베지테리안 버거";
+            }
+            case 4 -> {
+                this.categoryMenuName = "Cheeseburger";
+                this.menuPrice = 6900;
+                this.categoryDescription = "포테이토 번과 비프패티, 치즈가 토핑된 치즈버거";
+            }
+            case 5 -> {
+                this.categoryMenuName = "Hamburger";
+                this.menuPrice = 5400;
+                this.categoryDescription = "비프패티를 기반으로 야채가 들어간 기본버거";
+            }
+            default -> System.out.println("잘못된 주문 번호입니다. 다시 입력해주세요.");
         }
     }
     public void setFrozenInfo(int categoryMenuNum) {
@@ -131,13 +136,7 @@ public class CategoryMenu extends MainMenu {
     public String toString() {
         double price = getMenuPrice() * (0.001);
         //따움표 추가!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        return getCategoryMenuName() + "     | w " + price + " |  " + getCategoryDescription();
-    }
-    //주문 가격 누적
-    public double totalPrice() {
-        int total = 0;
-        total += getMenuPrice();
-        return (double) total;
+        return  "\""+ getCategoryMenuName() + "     | w " + price + " |  " + getCategoryDescription()+ "\"";
     }
 
 }
