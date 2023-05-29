@@ -49,6 +49,11 @@ public class Kiosk extends CategoryMenu {
         } else if (selectMainMenu == 4) {
             int selectBeerMenu = selectBeerMenu();
             super.setBeerInfo(selectBeerMenu);
+        //이렇게 하는 게 맞는지...
+        } else if (selectMainMenu == 5) {
+            selectOrderOrCancel(selectMainMenu);
+        } else if (selectMainMenu == 6) {
+            selectOrderOrCancel(selectMainMenu);
         } else {
             System.out.println("올바르지 않은 입력입니다.");
         }
@@ -192,7 +197,7 @@ public class Kiosk extends CategoryMenu {
         //order
         System.out.println("초 후에 메뉴판으로 돌아갑니다.");
         //3초후에 메인 메뉴판으로 돌아갑니다.(sleep?)
-        selectMainMenu();
+        //selectMainMenu();
     }
     //메뉴판에서 6.Cancel 입력시 주문을 취소할지 확인을 요청하는 문구가 출력됩니다.
     public int checkCancel() {
@@ -203,9 +208,11 @@ public class Kiosk extends CategoryMenu {
         return Integer.parseInt(result);
     }
     //1.확인 을 입력하면 장바구니는 초기화되고 취소 완료 문구와 함께 메뉴판이 출력됩니다.
-    public void printCancel() {
+    public void printCancel(int checkCancel) {
         System.out.println("진행하던 주문이 취소되었습니다.");
-        selectMainMenu();
+        orderList.clear();
+        priceList.clear();
+        //selectMainMenu();
     }
     // 주문 정보
     public String orderInfo() {

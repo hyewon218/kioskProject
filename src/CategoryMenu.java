@@ -95,21 +95,21 @@ public class CategoryMenu extends MainMenu {
     public void setDrinkInfo(int categoryMenuNum) {
         switch (categoryMenuNum) {
             case 1 -> {
-                this.categoryMenuName = "Shack";
-                this.menuPrice = 5900;
-                this.categoryDescription = "바닐라, 초콜렛, 솔티드 카라멜, 블랙&화이트, 스트로베리, 피넛버터, 커피";
+                this.categoryMenuName = "Shack-made Lemonade";
+                this.menuPrice = 3900;
+                this.categoryDescription = "매장에서 직접 만드는 상큼한 레몬에이드";
                 break;
             }
             case 2 -> {
-                this.categoryMenuName = "Shack of the Week";
-                this.menuPrice = 6500;
-                this.categoryDescription = "특별한 커스터드 클레이버";
+                this.categoryMenuName = "Fresh Brewed Iced Tea";
+                this.menuPrice = 3400;
+                this.categoryDescription = "직접 유기농 홍차를 우려낸 아이스티";
                 break;
             }
             case 3 -> {
-                this.categoryMenuName = "Red Bean Shake";
-                this.menuPrice = 6500;
-                this.categoryDescription = "신선한 커스터드와 함께 우유와 레드빈이 블랜딩 된 시즈널 쉐이크";
+                this.categoryMenuName = "Fifty/Fifty";
+                this.menuPrice = 3500;
+                this.categoryDescription = "레몬에이드와 아이스티의 만남";
                 break;
             }
             default -> System.out.println("잘못된 주문 번호입니다. 다시 입력해주세요.");
