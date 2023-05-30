@@ -70,19 +70,16 @@ public class CategoryMenu extends MainMenu {
                 this.categoryMenuName = "Shack";
                 this.menuPrice = 5900;
                 this.categoryDescription = "바닐라, 초콜렛, 솔티드 카라멜, 블랙&화이트, 스트로베리, 피넛버터, 커피";
-                break;
             }
             case 2 -> {
                 this.categoryMenuName = "Shack of the Week";
                 this.menuPrice = 6500;
                 this.categoryDescription = "특별한 커스터드 클레이버";
-                break;
             }
             case 3 -> {
                 this.categoryMenuName = "Red Bean Shake";
                 this.menuPrice = 6500;
                 this.categoryDescription = "신선한 커스터드와 함께 우유와 레드빈이 블랜딩 된 시즈널 쉐이크";
-                break;
             }
             case 4 -> {
                 this.categoryMenuName = "Floats";

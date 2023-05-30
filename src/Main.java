@@ -31,6 +31,13 @@ public class Main {
                     kiosk.printCancel(checkCancel);
                     // 주문이 완료되었습니다
                 }
+                // 선택 요구사항
+                case 0 -> {
+                    kiosk.printTotalSellingPrice();
+                    //1. 돌아가기 누르면 다시 메뉴판으로
+                    System.out.println();
+                    kiosk.printTotalSellingList();
+                }
                 default -> System.out.println("잘못된 입력입니다.");
             }
         }
