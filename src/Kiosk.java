@@ -92,7 +92,6 @@ public class Kiosk {
             // 실제로 장바구니에 추가하기
             // [ order ] 목록 출력하기 위해 리스트에 메뉴 정보 저장
             orderList.add(orderInfo());
-            // 주문 취소할 때 삭제???????????????????
             totalOrderList.add(totalOrderInfo());
             // 가격 [ total ] 구하기 위해 리스트에 가격 저장
             priceList.add(categoryMenu.getMenuPrice());
