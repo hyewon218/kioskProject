@@ -1,18 +1,19 @@
 import java.util.*;
 
 //사용자의 동작에 대해서 만든 클래스
-public class Kiosk extends CategoryMenu {
-    Screen screen = new Screen();
-    public Scanner sc = new Scanner(System.in);
-    int waitingNum = 0;
+public class Kiosk {
     // 장바구니 주문 리스트
     ArrayList<String> orderList = new ArrayList<String>();
     // 장바구니 총 가격 리스트
     ArrayList<Integer> priceList = new ArrayList<Integer>();
-    // 총 판매 금액 리스트에 담기
+    // 총 판매 금액 리스트 (주문 완료될 때마다 쌓이는)
     ArrayList<Integer> totalPriceList = new ArrayList<Integer>();
     //총 주문목록 저장
     ArrayList<String> totalOrderInfoList = new ArrayList<String>();
+    CategoryMenu categoryMenu = new CategoryMenu();
+    Screen screen = new Screen();
+    public Scanner sc = new Scanner(System.in);
+    int waitingNum = 0;
 
     public void setup() {
         while (true) {
@@ -45,10 +46,12 @@ public class Kiosk extends CategoryMenu {
                 // 선택 요구사항
                 case 0 -> {
                     // 선택 요구사항 : 총 판매 금액 조회 기능 추가
-                    printTotalSellingPrice();
+                    printTotalSellingList();
                     System.out.println();
                     // 선택 요구사항 : 총 판매 상품 목록 조회 기능 추가
-                    printTotalSellingList();
+                    printTotalSellingPrice();
+                    int back = back();
+                    backMenu(back);
                 }
                 default -> System.out.println("잘못된 입력입니다.");
             }
@@ -58,16 +61,16 @@ public class Kiosk extends CategoryMenu {
     public void setMenuInfo(int selectMainMenu) {
         if (selectMainMenu == 1) {
             int selectBurgersMenu = screen.selectBurgersMenu();
-            super.setBurgerInfo(selectBurgersMenu);
+            categoryMenu.setBurgerInfo(selectBurgersMenu);
         } else if (selectMainMenu == 2) {
             int selectForzenMenu = screen.selectForzenMenu();
-            super.setFrozenInfo(selectForzenMenu);
+            categoryMenu.setFrozenInfo(selectForzenMenu);
         } else if (selectMainMenu == 3) {
             int selectDrinksMenu = screen.selectDrinksMenu();
-            super.setDrinkInfo(selectDrinksMenu);
+            categoryMenu.setDrinkInfo(selectDrinksMenu);
         } else if (selectMainMenu == 4) {
             int selectBeerMenu = screen.selectBeerMenu();
-            super.setBeerInfo(selectBeerMenu);
+            categoryMenu.setBeerInfo(selectBeerMenu);
         } else {
             System.out.println("잘못된 입력입니다.");
         }
@@ -75,7 +78,7 @@ public class Kiosk extends CategoryMenu {
     // 장바구니 추가 여부 묻기
     //1.확인 입력시 장바구니에 추가되었다는 안내문구와 함께 메인메뉴로 다시 출력됩니다.
     public int checkBasket() {
-        System.out.println(super.toString());
+        System.out.println(categoryMenu.menuInfo());
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
         System.out.println("1. 확인               2.취소");
         String result = sc.nextLine();
@@ -84,12 +87,14 @@ public class Kiosk extends CategoryMenu {
     // 장바구니 추가 메서드
     public void addBasket(int checkBasket) {
         if (checkBasket == 1) {
-            System.out.println(super.getCategoryMenuName() + "가 장바구니에 추가되었습니다.");
+            System.out.println(categoryMenu.getMainMenuName() + "가 장바구니에 추가되었습니다.");
             // 실제로 장바구니에 추가하기
             // [ order ] 목록 출력하기 위해 리스트에 메뉴 정보 저장
             orderList.add(orderInfo());
             // 가격 [ total ] 구하기 위해 리스트에 가격 저장
-            priceList.add(getMenuPrice());
+            priceList.add(categoryMenu.getMenuPrice());
+            // priceList는 주문확인, 취소 시 초기화 되므로 priceList2 추가
+            //priceList2.add(getMenuPrice());
             System.out.println();
         } else if (checkBasket == 2) {
             //다시 메뉴 선택
@@ -111,12 +116,6 @@ public class Kiosk extends CategoryMenu {
         System.out.println(totalPriceInfo());
         System.out.println();
     }
-/*     // 장바구니 목록 출력하기
-    public void printBasketList() {
-        for (String basket : orderList) {
-            System.out.println(basket);
-        }
-    }*/
     // 선택 요구사항 추가
     // 개수까지 포함한 출력 형식을 리스트로 담아서 보여준다.(중복 확인)
     // 장바구니에 똑같은 상품이 담기면 주문 화면에서 상품 개수가 출력되도록 한다.
@@ -155,6 +154,15 @@ public class Kiosk extends CategoryMenu {
             }
         return total;
     }
+    // 선택 요구사항 : 총 판매금액 조회 기능 추가
+    public int totalSellingPrice() {
+        int totalSellingPrice = 0;
+        for (Integer totalPrice : totalPriceList) {
+            totalSellingPrice += totalPrice;
+        }
+        return totalSellingPrice;
+    }
+
     /////////////////////////////////////////////////
     // 장바구니에서 1.주문 입력시 주문완료 화면으로 넘어가고, 2.메뉴판 입력시 다시 메인메뉴로 돌아옵니다.
     public int checkOrder() {
@@ -181,12 +189,15 @@ public class Kiosk extends CategoryMenu {
         System.out.println("주문이 완료되었습니다!");
         // 장바구니 초기화
         orderList.clear();
-        // 가격 초기화
-        priceList.clear();
         // 선택 요구사항
         // 3. 구매가 완료될때마다 판매 상품, 가격 목록 저장
         totalOrderInfoList.add(totalOrderInfo());
-        totalPriceList.add(getMenuPrice());
+        System.out.println("구매완료 후 목록 쌓이는지 확인!!!!!!!!!!"+totalOrderInfoList);
+        // 장바구니 total 값을 totalPriceList에 추가추가
+        totalPriceList.add(totalPrice());
+        // 가격 초기화 (순서 주의!!!!!!!!!!!!)
+        priceList.clear();
+        System.out.println("주문 완료 될 때마다 총 판매 금액 누적 확인!!!!!!!"+totalPriceList);
         //menuNum();
         System.out.println();
         System.out.println("대기번호는 [ " + waitingNum + " ] 번입니다.");
@@ -226,7 +237,6 @@ public class Kiosk extends CategoryMenu {
     public void printTotalSellingList() {
         System.out.println("[ 총 판매상품 목록 현황 ]");
         System.out.println("현재까지 총 판매된 목록은 아래와 같습니다.");
-        System.out.println();
         // - ShackBurger    | W 6.9
         // - Float          | W 2.9
         for (String list : totalOrderInfoList) {
@@ -237,26 +247,29 @@ public class Kiosk extends CategoryMenu {
         System.out.println("[ 총 판매금액 현황 ]");
         System.out.println("현재까지 총 판매된 금액은 [ "+totalSellingPriceInfo()+" ] 입니다.");
         System.out.println();
+    }
+    public int back() {
         System.out.println("1. 돌아가기");
-    }
-    // 선택 요구사항 : 총 판매금액 조회 기능 추가
-    public int totalSellingPrice() {
-        int totalSellingPrice = 0;
-        for (Integer totalPrice : totalPriceList) {
-            totalSellingPrice += totalPrice;
-        }
-        return totalSellingPrice;
-    }
 
+        String result = sc.nextLine();
+        return Integer.parseInt(result);
+    }
+    public void backMenu(int back) {
+        if (back == 1) {
+
+        }else {
+            System.out.println("잘못된 입력입니다.");
+        }
+    }
     //////////////////출력형식/////////////////
     public String orderInfo() {
-        double price = getMenuPrice() * (0.001);
-        return getCategoryMenuName() + "     | w " + price + " | " + getCategoryDescription();
+        double price = categoryMenu.getMenuPrice() * (0.001);
+        return categoryMenu.getMainMenuName() + "     | w " + price + " | " + categoryMenu.getDescription();
     }
     // 구매가 완료될때마다 판매 상품 목록을 저장해줍니다.
     public String totalOrderInfo() {
-        double price = getMenuPrice() * (0.001);
-        return " - " + getCategoryMenuName() + "     | w " + price;
+        double price = categoryMenu.getMenuPrice() * (0.001);
+        return " - " + categoryMenu.getMainMenuName() + "     | w " + price;
     }
     // priceList에 쌓인 것
     public String totalPriceInfo() {
@@ -265,7 +278,7 @@ public class Kiosk extends CategoryMenu {
     }
     // 구매가 완료될때마다 총 판매 금액을 누적해줍니다.
     // 주문완료 or 취소하면 장바구니 리스트 초기화되어 리스트 추가
-    // totalPriceList에 쌓인 것 합
+    // totalPriceList 쌓인 것 합
     public String totalSellingPriceInfo() {
         double price = totalSellingPrice() * (0.001);
         return "w " + price;
