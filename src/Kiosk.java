@@ -4,12 +4,13 @@ import java.util.*;
 public class Kiosk {
     // 장바구니 주문 리스트
     ArrayList<String> orderList = new ArrayList<String>();
-    // 장바구니 총 가격 리스트
+    //총 주문목록 저장 (장바구니 리스트는 초기화됨)
+    ArrayList<String> totalOrderList = new ArrayList<String>();
+    ArrayList<String> totalSellingList = new ArrayList<String>();
+    // 장바구니 가격 리스트
     ArrayList<Integer> priceList = new ArrayList<Integer>();
     // 총 판매 금액 리스트 (주문 완료될 때마다 쌓이는)
     ArrayList<Integer> totalPriceList = new ArrayList<Integer>();
-    //총 주문목록 저장
-    ArrayList<String> totalOrderInfoList = new ArrayList<String>();
     CategoryMenu categoryMenu = new CategoryMenu();
     Screen screen = new Screen();
     public Scanner sc = new Scanner(System.in);
@@ -30,7 +31,7 @@ public class Kiosk {
                 }
                 case 5 -> {
                     // 주문 완료 화면
-                    selectOrderSuccess(selectMainMenu);
+                    orderSuccess();
                     //1. 주문 2. 메뉴판 출력
                     int selectCheckOrder = checkOrder();
                     // 1. 주문 2. 메뉴판 선택
@@ -91,10 +92,10 @@ public class Kiosk {
             // 실제로 장바구니에 추가하기
             // [ order ] 목록 출력하기 위해 리스트에 메뉴 정보 저장
             orderList.add(orderInfo());
+            // 주문 취소할 때 삭제???????????????????
+            totalOrderList.add(totalOrderInfo());
             // 가격 [ total ] 구하기 위해 리스트에 가격 저장
             priceList.add(categoryMenu.getMenuPrice());
-            // priceList는 주문확인, 취소 시 초기화 되므로 priceList2 추가
-            //priceList2.add(getMenuPrice());
             System.out.println();
         } else if (checkBasket == 2) {
             //다시 메뉴 선택
@@ -104,12 +105,13 @@ public class Kiosk {
     }
     //장바구니 목록 출력 시 필요//////////////////////////////////
     // 5.Order 입력시 장바구니 목록 출력
-    public void selectOrderSuccess(int selectOrderMenu) {
+    public void orderSuccess() {
         System.out.println("아래와 같이 주문 하시겠습니까?");
         System.out.println();
         System.out.println("[ Orders ]");
         // 기존 장바구니 목록 (개수 포함 X)
         // printBasketList();
+        // 개수 포함한 장바구니 목록
         menuNum();
         System.out.println();
         System.out.println("[ Total ]");
@@ -187,12 +189,13 @@ public class Kiosk {
         // 주문 완료 시 대기번호 1씩 증가
         waitingNum += 1;
         System.out.println("주문이 완료되었습니다!");
-        // 장바구니 초기화
-        orderList.clear();
         // 선택 요구사항
         // 3. 구매가 완료될때마다 판매 상품, 가격 목록 저장
-        totalOrderInfoList.add(totalOrderInfo());
-        System.out.println("구매완료 후 목록 쌓이는지 확인!!!!!!!!!!"+totalOrderInfoList);
+        // 장바구니 목록을 전체 목록에 추가
+        totalSellingList.add(totalOrderList.toString());
+        // 장바구니 초기화
+        orderList.clear();
+        System.out.println("구매완료 후 목록 쌓이는지 확인!!!!!!!!!!"+totalOrderList);
         // 장바구니 total 값을 totalPriceList에 추가추가
         totalPriceList.add(totalPrice());
         // 가격 초기화 (순서 주의!!!!!!!!!!!!)
@@ -217,7 +220,7 @@ public class Kiosk {
         String result = sc.nextLine();
         return Integer.parseInt(result);
     }
-    // 6.Cancel 주문 취소 화면에서 1.확인 을 입력하면 장바구니는 초기화되고 취소 완료 문구와 함께 메뉴판이 출력됩니다.
+    // 6.Cancel 소 화면에서 1.확인 을 입력하면 장바구니는 초기화되고 취소 완료 문구와 함께 메뉴판이 출력됩니다.
     public void printCancel(int checkCancel) {
         if (checkCancel==1) {
             System.out.println("진행하던 주문이 취소되었습니다.");
@@ -225,6 +228,8 @@ public class Kiosk {
             orderList.clear();
             // 가격 초기화
             priceList.clear();
+            // 장바구니 목록 초기화
+            totalOrderList.clear();
         } else if (checkCancel==2) {
             // 다시 메인화면으로...
         } else {
@@ -239,7 +244,7 @@ public class Kiosk {
         System.out.println("현재까지 총 판매된 목록은 아래와 같습니다.");
         // - ShackBurger    | W 6.9
         // - Float          | W 2.9
-        for (String list : totalOrderInfoList) {
+        for (String list : totalSellingList) {
             System.out.println(list);
         }
     }
