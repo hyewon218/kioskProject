@@ -1,3 +1,5 @@
+import java.util.Map;
+
 public class CategoryMenu extends MainMenu {
     // 메뉴 번호
     private int categoryMenuNum;
@@ -12,8 +14,10 @@ public class CategoryMenu extends MainMenu {
     public CategoryMenu() {
 
     }
-    public CategoryMenu(int categoryMenuNum) {
-        this.categoryMenuNum = categoryMenuNum;
+    public CategoryMenu(String categoryMenuName, int menuPrice, String categoryDescription) {
+        this.categoryMenuName = categoryMenuName;
+        this.menuPrice = menuPrice;
+        this.categoryDescription = categoryDescription;
     }
 
     // private 변수 외부랑 통신하기 위해 get 메소드 필요!
@@ -33,7 +37,6 @@ public class CategoryMenu extends MainMenu {
     public String getCategoryDescription() {
         return categoryDescription;
     }
-
     public void setBurgerInfo(int categoryMenuNum) {
         switch (categoryMenuNum) {
             case 1 -> {
@@ -64,6 +67,14 @@ public class CategoryMenu extends MainMenu {
             default -> System.out.println("잘못된 주문 번호입니다. 다시 입력해주세요.");
         }
     }
+//    Map<Integer, CategoryMenu> categoryMenuMap = Map.of(
+//            1, new CategoryMenu("ShackBurger", 6900, "토마토, 양상추, 쉑소스가 토핑된 치즈버거"),
+//            2, new CategoryMenu("SmokeShack", 8900, "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거"),
+//            3, new CategoryMenu("Shroom Burger", 9400, "몬스터 치즈와 체다 치즈가 토핑된 버거"),
+//            4, new CategoryMenu("Hamburger", 5900, "토마토, 양상추, 쉑소스가 토핑된 버거"),
+//            5, new CategoryMenu("Cheeseburger", 6400, "토마토, 양상추, 쉑소스가 토핑된 치즈버거")
+//            );
+
     public void setFrozenInfo(int categoryMenuNum) {
         switch (categoryMenuNum) {
             case 1 -> {
