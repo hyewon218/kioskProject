@@ -2,11 +2,9 @@ import java.util.Map;
 
 public class CategoryMenu extends MainMenu {
     // 메뉴 번호
-    private int categoryMenuNum;
     // 메뉴 이름
     private String categoryMenuName;
-    // 메뉴 가격(카테고리에만)
-    // 일단 int -> 합 구해야 하니까.
+    // 메뉴 가격
     private int menuPrice;
     // 메뉴 설명
     private String categoryDescription;
@@ -14,26 +12,12 @@ public class CategoryMenu extends MainMenu {
     public CategoryMenu() {
 
     }
-    public CategoryMenu(String categoryMenuName, int menuPrice, String categoryDescription) {
-        this.categoryMenuName = categoryMenuName;
-        this.menuPrice = menuPrice;
-        this.categoryDescription = categoryDescription;
-    }
-
     // private 변수 외부랑 통신하기 위해 get 메소드 필요!
-    public int getCategoryMenuNum() {
-        return categoryMenuNum;
-    }
     // 값 얻어오기
-    public void setCategoryMenuNum(int categoryMenuNum) {
-        this.categoryMenuNum = categoryMenuNum;
-    }
     public String getCategoryMenuName() {
         return categoryMenuName;
     }
-    public int getMenuPrice() {
-        return menuPrice;
-    }
+    public int getMenuPrice() { return menuPrice; }
     public String getCategoryDescription() {
         return categoryDescription;
     }
@@ -67,14 +51,6 @@ public class CategoryMenu extends MainMenu {
             default -> System.out.println("잘못된 주문 번호입니다. 다시 입력해주세요.");
         }
     }
-//    Map<Integer, CategoryMenu> categoryMenuMap = Map.of(
-//            1, new CategoryMenu("ShackBurger", 6900, "토마토, 양상추, 쉑소스가 토핑된 치즈버거"),
-//            2, new CategoryMenu("SmokeShack", 8900, "베이컨, 체리 페퍼에 쉑소스가 토핑된 치즈버거"),
-//            3, new CategoryMenu("Shroom Burger", 9400, "몬스터 치즈와 체다 치즈가 토핑된 버거"),
-//            4, new CategoryMenu("Hamburger", 5900, "토마토, 양상추, 쉑소스가 토핑된 버거"),
-//            5, new CategoryMenu("Cheeseburger", 6400, "토마토, 양상추, 쉑소스가 토핑된 치즈버거")
-//            );
-
     public void setFrozenInfo(int categoryMenuNum) {
         switch (categoryMenuNum) {
             case 1 -> {
@@ -143,7 +119,6 @@ public class CategoryMenu extends MainMenu {
     //구매 상품 한줄 출력
     public String toString() {
         double price = getMenuPrice() * (0.001);
-        //따움표 추가!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return  "\""+ getCategoryMenuName() + "     | w " + price + " |  " + getCategoryDescription()+ "\"";
     }
 

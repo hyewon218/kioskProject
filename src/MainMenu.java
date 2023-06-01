@@ -32,15 +32,7 @@ public class MainMenu {
 
         this.description=description;
     }
-    public void setMainMenuName(int menuNum) {
-        switch (menuNum) {
-            case 1 -> this.mainMenuName = "Burgers";
-            case 2 -> this.mainMenuName = "Forzen Custard";
-            case 3 -> this.mainMenuName = "Drinks";
-            case 4 -> this.mainMenuName = "Beer";
-            default -> System.out.println("잘못된 주문 번호입니다. 다시 입력해주세요.");
-        }
-    }
+
 }
 
 
