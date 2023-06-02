@@ -1,11 +1,13 @@
 import java.util.*;
+import java.util.regex.Pattern;
 
 //사용자의 동작에 대해서 만든 클래스
 public class Kiosk {
     // 장바구니 주문 리스트
     ArrayList<String> orderList = new ArrayList<String>();
-    //총 주문목록 저장 (장바구니 리스트는 초기화됨)
+    // 장바구니 주문 리스트 (orderList와 다른 출력 형식)
     ArrayList<String> totalOrderList = new ArrayList<String>();
+    // 총 주문 리스트 (주문 완료될 때마다 쌓이는)
     ArrayList<String> totalSellingList = new ArrayList<String>();
     // 장바구니 가격 리스트
     ArrayList<Integer> priceList = new ArrayList<Integer>();
@@ -92,7 +94,13 @@ public class Kiosk {
             // 실제로 장바구니에 추가하기
             // [ order ] 목록 출력하기 위해 리스트에 메뉴 정보 저장
             orderList.add(orderInfo());
-            totalOrderList.add(totalOrderInfo());
+            // orderInfo 잘라서 표현하기 -> totalOrderInfo(총 구매목록)
+            // ShackBurger     | w 6.9 | 토마토, 양상추, 쉑소스가 토핑된 치즈버거
+            // - ShackBurger     | w 6.9
+            System.out.println(orderInfo());
+            int index = orderInfo().lastIndexOf("|");
+            String totalOrderInfo = "- "+orderInfo().substring(0,index);
+            totalOrderList.add(totalOrderInfo);
             // 가격 [ total ] 구하기 위해 리스트에 가격 저장
             priceList.add(categoryMenu.getMenuPrice());
             System.out.println();
@@ -111,7 +119,7 @@ public class Kiosk {
         // 기존 장바구니 목록 (개수 포함 X)
         // printBasketList();
         // 개수 포함한 장바구니 목록
-        menuNum();
+        printBasketMenuNumList();
         System.out.println();
         System.out.println("[ Total ]");
         System.out.println(totalPriceInfo());
@@ -120,7 +128,7 @@ public class Kiosk {
     // 선택 요구사항 추가
     // 개수까지 포함한 출력 형식을 리스트로 담아서 보여준다.(중복 확인)
     // 장바구니에 똑같은 상품이 담기면 주문 화면에서 상품 개수가 출력되도록 한다.
-    public void menuNum() {
+    public void printBasketMenuNumList() {
         String info = "";
         // ArrayList 원소와 중복 횟수를 저장할 HashMap 객체를 준비
         Map<String, Integer> map = new HashMap<String, Integer>();
@@ -191,16 +199,16 @@ public class Kiosk {
         // 선택 요구사항
         // 3. 구매가 완료될때마다 판매 상품, 가격 목록 저장
         // 장바구니 목록을 전체 목록에 추가
-        totalSellingList.add(totalOrderList.toString());
+        totalSellingList.addAll(totalOrderList);
+        System.out.println("구매완료 후 목록 쌓이는지 확인!!!!!!!!!!"+totalSellingList);
+        totalOrderList.clear();
         // 장바구니 초기화
         orderList.clear();
-        System.out.println("구매완료 후 목록 쌓이는지 확인!!!!!!!!!!"+totalOrderList);
         // 장바구니 total 값을 totalPriceList에 추가추가
         totalPriceList.add(totalPrice());
         // 가격 초기화 (순서 주의!!!!!!!!!!!!)
         priceList.clear();
         System.out.println("주문 완료 될 때마다 총 판매 금액 누적 확인!!!!!!!"+totalPriceList);
-        //menuNum();
         System.out.println();
         System.out.println("대기번호는 [ " + waitingNum + " ] 번입니다.");
         System.out.println("(3초 후에 메뉴판으로 돌아갑니다.)");
@@ -260,7 +268,7 @@ public class Kiosk {
     }
     public void backMenu(int back) {
         if (back == 1) {
-
+            //돌아가기
         }else {
             System.out.println("잘못된 입력입니다.");
         }
@@ -269,11 +277,6 @@ public class Kiosk {
     public String orderInfo() {
         double price = categoryMenu.getMenuPrice() * (0.001);
         return categoryMenu.getMainMenuName() + "     | w " + price + " | " + categoryMenu.getDescription();
-    }
-    // 구매가 완료될때마다 판매 상품 목록을 저장해줍니다.
-    public String totalOrderInfo() {
-        double price = categoryMenu.getMenuPrice() * (0.001);
-        return " - " + categoryMenu.getMainMenuName() + "     | w " + price;
     }
     // priceList에 쌓인 것
     public String totalPriceInfo() {
@@ -285,6 +288,6 @@ public class Kiosk {
     // totalPriceList 쌓인 것 합
     public String totalSellingPriceInfo() {
         double price = totalSellingPrice() * (0.001);
-        return "w " + price;
+        return "w " + String.format("%.1f",price);
     }
 }
